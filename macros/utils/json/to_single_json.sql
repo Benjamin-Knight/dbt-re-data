@@ -1,4 +1,8 @@
-{% macro to_json_string_value_or_null(column) %}
+{% macro to_json_string_value_or_null(column) -%}
+    {{ adapter.dispatch('to_json_string_value_or_null','re_data') (column) }}
+{%- endmacro %}
+
+{% macro default__to_json_string_value_or_null(column) %}
     (
         case 
             when {{ column }} is null then 'null'
@@ -11,7 +15,11 @@
     )
 {% endmacro %}
 
-{% macro to_single_json(columns) %}
+{% macro to_single_json(columns) -%}
+    {{ adapter.dispatch('to_single_json','re_data') (columns) }}
+{%- endmacro %}
+
+{% macro default__to_single_json(columns) %}
     '{' ||
     {%- for column in columns %}
         '"{{ column }}": ' ||

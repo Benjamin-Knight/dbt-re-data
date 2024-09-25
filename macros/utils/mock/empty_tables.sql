@@ -1,5 +1,8 @@
-
 {% macro all_types_select() %}
+    {{ adapter.dispatch('all_types_select', 're_data')() }}
+{% endmacro %}
+
+{% macro default__all_types_select() %}
     with types_table as (
         select
             cast (null as {{ string_type() }}) as string_type,
@@ -14,7 +17,7 @@
     {{ re_data.all_types_select() }}
     select
     {% for name, type in list %}
-         {{ type }}_type as {{ name }}
+         {{ type }}_type as {{ adapter.quote(name) }}
         {%- if not loop.last %}, {%- endif %}
     {% endfor %}
     from types_table

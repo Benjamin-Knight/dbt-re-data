@@ -19,7 +19,9 @@
 
     {% set columns_query %}
         select * from {{ ref('re_data_columns') }}
-        where name = '{{ model.name }}' and schema = '{{ model.schema }}' and database = '{{ model.database }}'
+        where {{ quote_column_name('name') }} = '{{ model.name }}' 
+        and {{ quote_column_name('schema') }} = '{{ model.schema }}' 
+        and {{ quote_column_name('schema') }} = '{{ model.database }}'
     {% endset %}
     {% set columns = run_query(columns_query) %}
 

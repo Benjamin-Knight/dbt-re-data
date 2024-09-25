@@ -10,4 +10,3 @@ select
     run_at
 from {{ ref ('re_data_test_history') }}
 group by run_at
-order by run_at desc

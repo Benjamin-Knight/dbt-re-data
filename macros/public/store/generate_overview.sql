@@ -29,7 +29,7 @@
             from {{ ref('re_data_schema_changes') }}
         ),
         columns_casted as (
-            select {{ full_table_name('name', 'schema', 'database') }} as table_name, column_name, data_type, {{ bool_to_string('is_nullable') }}, computed_on
+            select {{ full_table_name(quote_column_name('name'), quote_column_name('schema'), quote_column_name('database')) }} as table_name, column_name, data_type, {{ bool_to_string('is_nullable') }}, computed_on
             from {{ ref('re_data_columns') }} 
         )
         
@@ -77,10 +77,11 @@
         from
             {{ ref('re_data_alerts') }}
         where
-            case
-                when type = 'anomaly' then {{ in_date_window('time_window_end', start_date, end_date)  }} 
-                else {{ in_date_window('time_window_end', start_date, none) }}
-            end
+            (
+                type = 'anomaly' 
+                and {{ in_date_window('time_window_end', start_date, end_date)  }}
+            )
+            OR {{ in_date_window('time_window_end', start_date, none) }}
     )
     order by {{ re_data.quote_column('computed_on')}} desc
     {% endset %}

@@ -21,13 +21,13 @@
     )
 
     select
-        cast (table_name as {{ string_type() }} ) as name,
-        cast (table_schema as {{ string_type() }} ) as schema,
-        cast (table_catalog as {{ string_type() }} ) as database,
-        cast (column_name as {{ string_type() }} ) as column_name,
-        cast (data_type as {{ string_type() }} ) as data_type,
-        cast (case is_nullable when 'YES' then 1 else 0 end as {{ boolean_type() }} ) as is_nullable,
-        cast ({{dbt.current_timestamp_backcompat()}} as {{ timestamp_type() }}) as computed_on
+        cast (table_name as {{ string_type() }} ) as {{ quote_column_name('name') }},
+        cast (table_schema as {{ string_type() }} ) as {{ quote_column_name('schema') }},
+        cast (table_catalog as {{ string_type() }} ) as {{ quote_column_name('database') }},
+        cast (column_name as {{ string_type() }} ) as {{ quote_column_name('column_name') }},
+        cast (data_type as {{ string_type() }} ) as {{ quote_column_name('data_type') }},
+        cast (case is_nullable when 'YES' then 1 else 0 end as {{ boolean_type() }} ) as {{ quote_column_name('is_nullable') }},
+        cast ({{dbt.current_timestamp_backcompat()}} as {{ timestamp_type() }}) as {{ quote_column_name('computed_on') }}
     from columns_from_select
 
     {% else %}

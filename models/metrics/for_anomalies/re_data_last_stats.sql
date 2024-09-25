@@ -59,7 +59,7 @@ with median_value as (
         table_name,
         column_name,
         metric,
-        stddev(value) as last_stddev,
+        {{ standard_deviation('value') }} as last_stddev,
         max(time_window_end) as last_metric_time,
         interval_length_sec,
         max(computed_on) as computed_on

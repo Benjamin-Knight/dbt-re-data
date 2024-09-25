@@ -30,7 +30,11 @@
     cast({{ val }} as {{ numeric_type() }}) / 3600
 {% endmacro %}
 
-{% macro generate_metric_value_text(metric, value) %}
+{% macro generate_metric_value_text(metric, value) -%}
+  {{ return(adapter.dispatch('generate_metric_value_text', 're_data')(metric, value)) }}
+{%- endmacro %}
+
+{% macro default__generate_metric_value_text(metric, value) %}
     case 
         when {{ metric }} = 'freshness' 
             then cast({{ to_2dp(seconds_to_hours(value)) }} as {{ string_type() }}) || ' hours'
@@ -43,7 +47,11 @@
 
 {% endmacro %}
 
-{% macro generate_schema_change_message(operation, column_name, prev_column_name, prev_data_type, data_type, detected_time) %}
+{% macro generate_schema_change_message(operation, column_name, prev_column_name, prev_data_type, data_type, detected_time) -%}
+  {{ return(adapter.dispatch('generate_schema_change_message', 're_data')(operation, column_name, prev_column_name, prev_data_type, data_type, detected_time)) }}
+{%- endmacro %}
+
+{% macro default__generate_schema_change_message(operation, column_name, prev_column_name, prev_data_type, data_type, detected_time) %}
     case 
         when {{ operation }} = 'column_added'
             then 'column ' || {{ column_name }} || ' of type ' || {{ data_type }} || ' was added.'
@@ -55,7 +63,11 @@
     end
 {% endmacro %}
 
-{% macro generate_failed_test_message(test_name, column_name) %}
+{% macro generate_failed_test_message(test_name, column_name) -%}
+  {{ return(adapter.dispatch('generate_failed_test_message', 're_data')(test_name, column_name)) }}
+{%- endmacro %}
+
+{% macro default__generate_failed_test_message(test_name, column_name) %}
     case 
         when {{ column_name }} is null
             then 'Test ' || {{ test_name }} || ' failed.'

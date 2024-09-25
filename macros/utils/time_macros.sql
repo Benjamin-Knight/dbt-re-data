@@ -1,11 +1,11 @@
 
 {% macro time_window_start() %}
-    cast('{{- var('re_data:time_window_start') -}}' as timestamp) 
+    cast('{{- var('re_data:time_window_start') -}}' as {{ timestamp_type() }}) 
 {% endmacro %}
 
 
 {% macro time_window_end() %}
-    cast('{{- var('re_data:time_window_end') -}}' as timestamp)
+    cast('{{- var('re_data:time_window_end') -}}' as {{ timestamp_type() }})
 {% endmacro %}
 
 

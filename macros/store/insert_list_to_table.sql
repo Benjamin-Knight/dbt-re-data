@@ -7,7 +7,7 @@
         {% if single_insert_list_size == insert_size or loop.last %}
 
             {% set insert_query %}
-                insert into {{ table }} ({%- for p in params %}{{p}}{% if not loop.last %}, {% endif %}{% endfor %}) values
+                insert into {{ table }} ({%- for p in params %}{{re_data.quote_column_name(p)}}{% if not loop.last %}, {% endif %}{% endfor %}) values
                 {%- for row in single_insert_list -%}
                     (
                     {%- for p in params -%}
@@ -22,7 +22,12 @@
                                   {{- re_data.quote_string(row[p]) -}}
                                 {%- endif -%}
                             {%- elif row[p] is number -%}
-                                {{-row[p]-}}
+                                {%- if dtype and p in dtype -%}
+                                  {% set cast_type = dtype[p] %}
+                                  cast ({{ re_data.quote_string(row[p]) }} as {{ cast_type }})
+                                {%- else %}
+                                  {{-row[p]-}}
+                                {%- endif -%}
                             {%- else -%}
                                 {{- re_data.quote_string(tojson(row[p])) -}}
                             {%- endif -%}

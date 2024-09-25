@@ -43,7 +43,6 @@
         {{ return ('') }}
     {% endif %}
 
-    insert into {{ ref(ref_model) }}
     with temp_table_metrics as (
     select 
         {%- for col_expr in col_exprs %}
@@ -56,6 +55,7 @@
         {{ in_time_window(model.time_filter) }}
     )
 
+    insert into {{ ref(ref_model) }}
     {%- for col_expr in col_exprs %}
         {% set final_metric_name = get_final_metric_name(col_expr.metric, model.time_filter) %}
         

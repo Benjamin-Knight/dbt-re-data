@@ -10,7 +10,7 @@
 with columns as (
 
 select
-    {{ full_table_name('cols.name', 'cols.schema', 'cols.database') }} as table_name,
+    {{ full_table_name('cols.' + quote_column_name('name'), 'cols.' + quote_column_name('schema'), 'cols.' + quote_column_name('database')) }} as table_name,
     cols.column_name,
     cols.data_type,
     cols.is_nullable,
@@ -18,7 +18,9 @@ select
 from
     {{ ref('re_data_columns')}} cols, {{ ref('re_data_selected')}} tables
 where
-    cols.name = tables.name and cols.schema = tables.schema and cols.database = tables.database
+    cols.{{ quote_column_name('name') }} = tables.{{ quote_column_name('name') }} 
+    and cols.{{ quote_column_name('schema') }} = tables.{{ quote_column_name('schema') }} 
+    and cols.{{ quote_column_name('database') }} = tables.{{ quote_column_name('database') }}
 )
 
 select

@@ -2,7 +2,7 @@
 
     {% set monitored_query %}
         select
-            {{ full_table_name('name', 'schema', 'database') }} as {{ re_data.quote_column('model') }},
+            {{ full_table_name(quote_column_name('name'), quote_column_name('schema'), quote_column_name('database')) }} as {{ re_data.quote_column('model') }},
              time_filter as {{ re_data.quote_column('time_filter') }},
             metrics as {{ re_data.quote_column('metrics') }},
             columns as {{ re_data.quote_column('columns') }},

@@ -13,11 +13,7 @@
 
 {% if execute and not re_data.in_compile() %}
     {% set last_data_points %} 
-        select
-            distinct detected_time
-        from {{ ref('re_data_columns_over_time') }}
-        order by
-        detected_time desc limit 2;
+        {{ re_data.re_data_schema_changes_last_data_points() }}
     {% endset %}
 
     {% set detected_times = run_query(last_data_points) %}
@@ -55,7 +51,7 @@
         select * from {{ ref('re_data_columns_over_time')}}
         where detected_time = cast('{{ most_recent_time }}' as {{ timestamp_type() }})
         and table_name in (
-            select {{ full_table_name('name', 'schema', 'database') }} from {{ ref('re_data_selected')}}
+            select {{ full_table_name(quote_column_name('name'), quote_column_name('schema'), quote_column_name('database')) }} from {{ ref('re_data_selected')}}
         )
     ),
 
@@ -64,7 +60,7 @@
         select * from {{ ref('re_data_columns_over_time')}}
         where detected_time = cast('{{ prev_most_recent}}' as {{ timestamp_type() }})
         and table_name in (
-            select {{ full_table_name('name', 'schema', 'database') }} from {{ ref('re_data_selected')}}
+            select {{ full_table_name(quote_column_name('name'), quote_column_name('schema'), quote_column_name('database')) }} from {{ ref('re_data_selected')}}
         )
     ),
 
