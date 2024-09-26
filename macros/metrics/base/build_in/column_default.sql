@@ -70,7 +70,7 @@
     COALESCE(
         SUM(
             CASE
-                WHEN {{ context.column_name }} IS TRUE THEN 1
+                WHEN {{ context.column_name }} = CAST('TRUE' AS {{ boolean_type() }}) THEN 1
                 ELSE 0
             END
         ),
@@ -82,7 +82,7 @@
     COALESCE(
         SUM(
             CASE
-                WHEN {{ context.column_name }} IS FALSE THEN 1
+                WHEN {{ context.column_name }} IS CAST('FALSE' AS {{ boolean_type() }}) THEN 1
                 ELSE 0
             END
         ),
