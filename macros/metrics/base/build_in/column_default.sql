@@ -20,11 +20,11 @@
 {% endmacro %}
 
 {% macro re_data_metric_max_length(context) %}
-    max({{column_length(context.column_name)}}
+    max({{column_length(context.column_name)}})
 {% endmacro %}
 
 {% macro re_data_metric_min_length(context) %}
-    min({{column_length(context.column_name)}}
+    min({{column_length(context.column_name)}})
 {% endmacro %}
 
 {% macro re_data_metric_avg_length(context) %}
