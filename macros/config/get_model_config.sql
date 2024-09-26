@@ -21,7 +21,7 @@
         select * from {{ ref('re_data_columns') }}
         where {{ quote_column_name('name') }} = '{{ model.name }}' 
         and {{ quote_column_name('schema') }} = '{{ model.schema }}' 
-        and {{ quote_column_name('schema') }} = '{{ model.database }}'
+        and {{ quote_column_name('database') }} = '{{ model.database }}'
     {% endset %}
     {% set columns = run_query(columns_query) %}
 
