@@ -12,7 +12,8 @@
 {% endmacro %}
 
 {% macro re_data_metric_stddev(context) %}
-    stddev(cast ( {{context.column_name}} as {{ numeric_type() }}))
+    {% set innerText %}cast({{context.column_name}} as {{ numeric_type() }}){% endset %}
+    {{ standard_deviation(innerText) }}
 {% endmacro %}
 
 {% macro re_data_metric_variance(context) %}
