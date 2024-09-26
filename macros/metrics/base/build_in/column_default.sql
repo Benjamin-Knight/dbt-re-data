@@ -17,7 +17,8 @@
 {% endmacro %}
 
 {% macro re_data_metric_variance(context) %}
-    variance(cast ( {{context.column_name}} as {{ numeric_type() }}))
+    {% set innerText %}cast( {{context.column_name}} as {{ numeric_type() }}){% endset %}
+    {{ variance(innerText) }}
 {% endmacro %}
 
 {% macro re_data_metric_max_length(context) %}
