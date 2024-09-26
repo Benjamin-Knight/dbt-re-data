@@ -20,15 +20,15 @@
 {% endmacro %}
 
 {% macro re_data_metric_max_length(context) %}
-    max(length({{context.column_name}}))
+    max({{column_length(context.column_name)}}
 {% endmacro %}
 
 {% macro re_data_metric_min_length(context) %}
-    min(length({{context.column_name}}))
+    min({{column_length(context.column_name)}}
 {% endmacro %}
 
 {% macro re_data_metric_avg_length(context) %}
-    avg(cast (length( {{context.column_name}} ) as {{ numeric_type() }}))
+    avg(cast ({{column_length(context.column_name)}} as {{ numeric_type() }}))
 {% endmacro %}
 
 {% macro re_data_metric_nulls_count(context) %}
